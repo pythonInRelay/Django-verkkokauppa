@@ -18,6 +18,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Cart settings and cookies
+
+SESSION_COOKIE_AGE = 86400  # Seconds product will last in cart before being deleted
+CART_SESSION_ID = 'cart'
 
 # Application definition
 
