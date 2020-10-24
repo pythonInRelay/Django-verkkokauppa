@@ -1,0 +1,24 @@
+{%  extends 'base.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {%  block content %}
+
+        <!-- Set title to product title, price to price and id to id -->
+        <h1 class="title">{{ product.title }}</h1>
+        <h2 class="subtitle">€{{  product.price }}</h2>
+        <h3 class="product_id>">Product ID: {{ product.id }}</h3><br>
+
+        <!-- If product has a description show it too -->
+        {% if product.description %}
+        <p>{{ product.description }}</p>
+        {%  endif %}
+
+    {% endblock %}
+</head>
+<body>
+
+</body>
+</html>
