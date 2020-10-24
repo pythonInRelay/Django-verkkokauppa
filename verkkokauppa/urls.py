@@ -3,11 +3,13 @@
 from django.contrib import admin
 from django.urls import path
 
+from apps.cart.views import cart
 from apps.core.views import frontpage, contact, about
 from apps.store.views import product_detail, category_detail
 
 urlpatterns = [
     path('', frontpage, name='frontpage'),  # Store frontpage
+    path('cart/', cart, name='cart'),  # Shopping cart page
     path('contact/', contact, name='contact'),  # Contact page
     path('about/', about, name='about'),  # About page
     path('admin/', admin.site.urls),  # Site Django admin page

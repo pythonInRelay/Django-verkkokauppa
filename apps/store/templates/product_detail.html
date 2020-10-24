@@ -4,6 +4,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <!-- Set window name to product's title -->
+    {% block title %}{{ product.title }} | {% endblock %}
+
     {%  block content %}
 
         <!-- Set title to product title, price to price and id to id -->

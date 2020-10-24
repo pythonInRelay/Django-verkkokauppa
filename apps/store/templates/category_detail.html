@@ -4,6 +4,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <!-- Set window name to category's title -->
+    {% block title %}{{ category.title }} | {% endblock %}
+
     {%  block content %}
     <h1 class="title">{{ category.title }}</h1>
 
