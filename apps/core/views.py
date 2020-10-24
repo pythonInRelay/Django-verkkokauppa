@@ -4,7 +4,7 @@ from apps.store.models import Product
 
 # Render the frontpage
 def frontpage(request):
-    products = Product.objects.all()  # Show all the products in the database
+    products = Product.objects.filter(is_featured=True)  # Show ONLY FEATURED products on frontpage
 
     context = {
         'products': products
@@ -16,3 +16,7 @@ def frontpage(request):
 def contact(request):
     return render(request, 'contact.html')
 
+
+# Render the about page
+def about(request):
+    return render(request, 'about.html')
