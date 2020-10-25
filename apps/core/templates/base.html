@@ -69,32 +69,43 @@
 
         <!-- Set the cart quantity to zero -->
         <script>
-            var store = new Vuex.Store({
-                state: {
-                    numItems: 0
-                },
+			var store = new Vuex.Store({
+				state: {
+					numItems: {{ cart.get_total_length }},
+					totalCost: {{ cart.get_total_cost }}
+				},
+				mutations: {
+					increment(state, quantity) {
+						state.numItems += quantity;
+					},
+					changeTotalCost(state, newCost) {
+						state.totalCost += parseFloat(newCost)  // Must cast as a float
+					}
+				}
+			});
 
-                <!-- Create a mutation that increments with each additional product added -->
-                mutations: {
-                    increment(state, quantity) {
-                        state.numItems += quantity;
-                    },
-                    changeTotalCost(state, newCost) {
-                        state.totalCost += newCost
-                    }
-                }
-            });
+			var navbarapp = new Vue({
+				el: '#navbarapp',
+				delimiters: ['[[', ']]'],
+				store: store,
+				data () {
+					return {
+						menuClass: false
+					}
+				},
+				computed: {
+					numItems: function() {
+						return store.state.numItems
+					}
+				},
+				methods: {
+					toggleMenu() {
+						console.log('toggleMenu');
 
-            var navbarapp = new Vue({
-                el: '#navbarapp',
-                delimiters: ['[[', ']]'],
-                store: store,
-                computed: {
-                    numItems: function() {
-                        return store.state.numItems
-                    }
-                }
-            });
+						this.menuClass = !this.menuClass;
+					}
+				}
+			});
         </script>
 
         {%  block scripts %}

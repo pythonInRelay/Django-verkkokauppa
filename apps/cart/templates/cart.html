@@ -83,11 +83,11 @@
                         var data = {
                             'product_id': product_id,
                             'update': true,
-                            'quantity': parseInt(quantity) + 1  // Parse as Int to be sure
+                            'quantity': parseInt(quantity) + 1  //  Increments the TOTAL quantity of items in cart
                         };
 
-                        store.commit('increment', 1); // When incrementing quantity also call Vuex increment
-                        store.commit('changeTotalCost', price);
+                        store.commit('increment', 1); // When incrementing quantity also call Vuex refresh
+                        store.commit('changeTotalCost', parseFloat(price));
 
                         fetch('/api/add_to_cart/', {
                             method: 'POST',
@@ -118,7 +118,7 @@
                         })
                     },
 
-                    decrementQuantity(product_id, quantity) {
+                    decrementQuantity(product_id, quantity, price) {
                         console.log('product_id', product_id);
 
                         var data = {
@@ -128,6 +128,7 @@
                         };
 
                         store.commit('increment', -1); // When incrementing quantity also call Vuex increment
+                        store.commit('changeTotalCost', -parseFloat(price));
 
                         fetch('/api/add_to_cart/', {
                             method: 'POST',
@@ -186,7 +187,7 @@
                         })
                     }
                 }
-            });
+            },)
         </script>
 {%  endblock %}
 </head>

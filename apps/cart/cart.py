@@ -66,4 +66,4 @@ class Cart(object):
 
     # Show total price for the whole cart in navbar
     def get_total_cost(self):
-        return sum(float(item['total_price']) for item in self.cart.values())
+        return sum(float(item['total_price']) for item in self)
