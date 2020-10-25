@@ -10,17 +10,76 @@
 
     {%  block content %}
 
-        <!-- Set title to product title, price to price and id to id -->
-        <h1 class="title">{{ product.title }}</h1>
-        <h2 class="subtitle">€{{  product.price }}</h2>
-        <h3 class="product_id>">Product ID: {{ product.id }}</h3><br>
+        <!-- Product App -->
+        <div id="productapp">
+            <img src="/{{ product.image }}">
+            <hr>
 
-        <!-- If product has a description show it too -->
-        {% if product.description %}
-        <p>{{ product.description }}</p>
-        {%  endif %}
+            <!-- Set title to product title, price to price and id to id -->
+            <h1 class="title">{{ product.title }}</h1>
+            <h2 class="subtitle">€{{  product.price }}</h2>
+            <h3 class="product_id>">Product ID: {{ product.id }}</h3><br>
+
+            <!-- If product has a description show it too -->
+            {% if product.description %}
+            <p>{{ product.description }}</p>
+            {%  endif %}
+
+            <button @click="addToCart({{ product.id }})">Add to Cart</button>
+        </div>
 
     {% endblock %}
+    {%  block scripts %}
+
+        <script>
+            var productapp = new Vue({
+                el: '#productapp',
+                delimiters: ['[[', ']]'],  // Prevent clash with Django (from docs)
+                store: store,  // Extend functionality of Vuex on this page
+                data () {
+                    return {
+
+                    }
+                },
+                mounted() {
+                    console.log('Mounted');
+                },
+                methods: {
+                    addToCart(product_id) {
+                        console.log('Product_id:', product_id);
+
+                        var data = {
+                            'product_id': product_id,
+                            'update': false,
+                            'quantity': 1
+                        };
+
+                        fetch('/api/add_to_cart/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',  // Tell it the content type
+                                'X-CSRFToken': '{{ csrf_token }}'  // Django security requirement (from docs)
+                            },
+                            credentials: 'same-origin',  // Accept request only from same-origin
+                            body: JSON.stringify(data)
+                        })
+                        .then((response) => {
+                            console.log(response)
+
+                            store.commit('increment', 1);
+                        })
+
+                        .catch(function (error) {
+                            console.log('Error 2');
+                            console.log(error)
+                        })
+                    }
+                }
+            });
+            </script>
+
+        {% endblock %}
+
 </head>
 <body>
 
