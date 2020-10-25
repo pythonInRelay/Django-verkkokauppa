@@ -11,6 +11,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+STRIPE_API_KEY_PUBLISHABLE = 'pk_test_51Hg4RnF71TICVu4DCrm1ulWxyBJ5ZsPwCgeBzxquqPiO6vf5M2ja3Vnozxh9nZcDyxk1bLUNKcjHEcp10KMgB73700rOkZPhMf'
+STRIPE_API_KEY_HIDDEN = STRIPE_API_KEY_HIDDEN
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = SECRET_KEY
 
@@ -64,7 +67,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'apps.store.context_processors.menu_categories'
+                'apps.store.context_processors.menu_categories',
+                'apps.cart.context_processors.cart'
             ],
         },
     },
@@ -131,5 +135,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')  # Needed for custom .css
 ]
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

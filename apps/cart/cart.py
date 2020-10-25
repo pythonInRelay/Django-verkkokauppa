@@ -43,7 +43,7 @@ class Cart(object):
             self.cart[product_id] = {'quantity': 0, 'price': price, 'id': product_id}  # Set to string instead of dict index
 
         if update_quantity:
-            self.cart[product_id]['quantity'] += 1  # Add one extra when updating quantity
+            self.cart[product_id]['quantity'] = quantity  # Add one extra when updating quantity
         else:
             self.cart[product_id]['quantity'] += 1  # When adding a new product to cart, just add 1
 
@@ -59,6 +59,11 @@ class Cart(object):
     def save(self):
         self.session[settings.CART_SESSION_ID] = self.cart  # Update cookie/session
         self.session.modified = True  # Browser knows session has been modified
+
+    # Clear cart after order complete
+    def clear(self):
+        del self.session[settings.CART_SESSION_ID]
+        self.session.modified = True  # Update browser session
 
     # Cart button increment function (return value of item quantity plus items in cart)
     def get_total_length(self):

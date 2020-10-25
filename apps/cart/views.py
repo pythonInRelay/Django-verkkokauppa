@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.conf import settings
 
 from .cart import Cart
 
@@ -16,7 +17,15 @@ def cart_detail(request):
 
     context = {
         'cart': cart,
+        'pub_key': settings.STRIPE_API_KEY_PUBLISHABLE,
         'products_string': products_string
     }
 
     return render(request, 'cart.html', context)
+
+
+# Add payment success page
+def success(request):
+    cart = Cart(request)
+    cart.clear()
+    return render(request, 'success.html')

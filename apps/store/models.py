@@ -29,8 +29,8 @@ class Product(models.Model):
     product_id = models.IntegerField()
     is_featured = models.BooleanField(default=False)  # Is the product a featured product? (Displays on frontpage)
 
-    image = models.ImageField(upload_to='media/uploads/', blank=True, null=True)  # Change upload DIR from root
-    thumbnail = models.ImageField(upload_to='media/uploads/', blank=True, null=True)
+    image = models.ImageField(upload_to='uploads/', blank=True, null=True)  # Change upload DIR from root
+    thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)  # Add time of added product to DB
 
     class Meta:

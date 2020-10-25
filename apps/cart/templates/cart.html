@@ -1,7 +1,7 @@
 {%  extends 'base.html' %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
 
@@ -16,46 +16,123 @@
             {%  if cart %}  <!-- If user has items in cart display the title of each -->
 
                 <!-- Table for displaying the values on the cart page -->
-                <div class="table">
-                    <table class="table">
-                        <thead>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Total</th>
-                            <th>Product ID</th>
-                            <th></th>
-                        </thead>
+                <div v-if="products.length > 0"> <!-- Hide if no products in cart -->
+                    <div class="table">
+                        <table class="table">
+                            <thead>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                                <th>Product ID</th>
+                                <th></th>
+                            </thead>
 
-                        <tbody>
-                        <tr v-for="product in products"> <!-- Vue.js loop for each product in cart -->
-                            <td>[[ product.title ]]</td>  <!-- Not using delimiters throws error (from docs) -->
-                            <td><button @click="decrementQuantity(product.id, product.quantity, product.price)">-</button> [[ product.quantity ]] <button @click="incrementQuantity(product.id, product.quantity, product.price)">+</button></td>
-                            <td>€[[ product.price ]]</td>
-                            <td>€[[ product.total_price ]]</td>
-                            <td>[[ product.product_id ]]</td>
-                            <td><button @click="removeFromCart(product.id)">Remove from Cart</button></td>
-                        </tr>
-                        </tbody>
-
-                        <tfoot>
-                            <tr>
-                                <td>Total Price:</td>
-                                <td>[[  numItems ]]</td>
-                                <td></td>
-                                <td>€[[ totalCost ]]</td>
+                            <tbody>
+                            <tr v-for="product in products"> <!-- Vue.js loop for each product in cart -->
+                                <td>[[ product.title ]]</td>  <!-- Not using delimiters throws error (from docs) -->
+                                <td><button @click="decrementQuantity(product.id, product.quantity, product.price)">-</button> [[ product.quantity ]] <button @click="incrementQuantity(product.id, product.quantity, product.price)">+</button></td>
+                                <td>€[[ product.price ]]</td>
+                                <td>€[[ product.total_price ]]</td>
+                                <td>[[ product.product_id ]]</td>
+                                <td><button @click="removeFromCart(product.id)">Remove from Cart</button></td>
                             </tr>
-                        </tfoot>
-                    </table>
-                </div>
+                            </tbody>
 
+                            <tfoot>
+                                <tr>
+                                    <td>Total Price:</td>
+                                    <td>[[  numItems ]]</td>
+                                    <td></td>
+                                    <td>€[[ totalCost ]]</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <!-- Telling Vue not to reload the page on submit :) Thanks Vue docs! -->
+                    <form v-on:submit.prevent="submitForm()">
+                        <div class="field">
+                            <div class="control">
+                                <label>First name</label>
+                                <input type="text" name="first_name" v-model="first_name">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <label>Last name</label>
+                                <input type="text" name="last_name" v-model="last_name">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <label>E-mail</label>
+                                <input type="text" name="email" v-model="email">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <label>Address</label>
+                                <input type="text" name="address" v-model="address">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <label>Zip code</label>
+                                <input type="text" name="zipcode" v-model="zipcode">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <label>City</label>
+                                <input type="text" name="city" v-model="city">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <label>Country</label>
+                                <input type="text" name="country" v-model="country">
+                            </div>
+                        </div>
+
+                        <button class="button is-primary">Check Out</button>
+                    </form>
+                </div>
+                <p v-else>Your cart is empty!</p>
             {% else %}
                 <p>Your cart is empty!</p>
             {%  endif %}
+
+        <!-- Use Bulma to show error messages if they exist -->
+            <div v-if="errors.length > 0">
+                <article class="message is-danger"
+                    v-for="error in errors"
+                >
+                  <div class="message-header">
+                    <p>Error:</p>
+                  </div>
+                  <div class="message-body">
+                      [[ error ]]
+                  </div>
+                </article>
+            </div>
+
+            <!-- Run buy() on click -->
+            <button @click="buy()">Check out</button>
+
         </div>
     {% endblock %}
 
 {%  block scripts %}
+
+    <!-- Need to run below as JS otherwise Vue handles it -->
+    <script type="application/javascript" src="https://js.stripe.com/v3/"></script>
         <script>
             var productapp = new Vue({
                 el: '#cartapp',
@@ -63,6 +140,15 @@
                 store: store,  // Extend functionality of Vuex cart to cart.html
                 data() {
                     return {
+
+                        errors: [],
+                        first_name: '{{ first_name }}',
+                        last_name: '{{ last_name }}',
+                        email: '{{ email }}',
+                        address: '{{ address }}',
+                        zipcode: '{{ zipcode }}',
+                        city: '{{ city }}',
+                        country: '{{ country }}',
                         products: [{{ products_string|safe }}]  // Make Django print cart page info
                     }
                 },
@@ -77,6 +163,108 @@
                 },
 
                 methods: {
+                    buy() {  // buy() function is as follows and suggested by Stripe
+                        var data = {
+                            'first_name': this.first_name,
+                            'last_name': this.last_name,
+                            'email': this.email,
+                            'address': this.address,
+                            'zipcode': this.zipcode,
+                            'city': this.city,
+                            'country': this.country,
+                        };
+
+                        this.errors = [];
+
+                        if (data.first_name === '') {
+                            this.errors.push('Error! Please enter a first name!')
+                        }
+
+                        if (data.last_name === '') {
+                            this.errors.push('Error! Please enter a last name!')
+                        }
+
+                        if (data.email === '') {
+                            this.errors.push('Error! Please enter a email!')
+                        }
+
+                        if (data.address === '') {
+                            this.errors.push('Error! Please enter a address!')
+                        }
+
+                        if (data.zipcode === '') {
+                            this.errors.push('Error! Please enter a zipcode!')
+                        }
+
+                        if (data.city === '') {
+                            this.errors.push('Error! Please enter a city!')
+                        }
+
+                        if (data.country === '') {
+                            this.errors.push('Error! Please enter a sandwich!')  // Just checking you're paying attention reader :)
+                        }
+
+                        if (this.errors.length === 0) { // Don't run if errors
+                            var stripe = Stripe('{{ pub_key }}')
+
+                            fetch('/api/create_checkout_session/', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',  // Tell it the content type
+                                    'X-CSRFToken': '{{ csrf_token }}'  // Django security requirement (from docs)
+                                },
+                                credentials: 'same-origin',
+                                body: JSON.stringify(data)
+                            })
+                                .then(function (response) {
+                                    return response.json()  // Return a reply
+                                })
+                                .then(function (session) {
+                                    return stripe.redirectToCheckout({sessionId: session.session.id})  // Redirect to Stripe checkout
+                                })
+                                .then(function (result) {  // Alert us of errors
+                                    if (result.error) {
+                                        alert(result.error.message)
+                                    }
+                                })
+                                .catch(function(error) {  // Catch all other errors to console
+                                    console.log('Error:', error)
+                                })
+                        }
+                    },
+                    submitForm() {
+                        console.log('Submitted Form');
+
+                        var data = {
+                            'first_name': this.first_name,
+                            'last_name': this.last_name,
+                            'email': this.email,
+                            'address': this.address,
+                            'zipcode': this.zipcode,
+                            'city': this.city,
+                            'country': this.country,
+                        };
+                        fetch('/api/checkout/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',  // Tell it the content type
+                                'X-CSRFToken': '{{ csrf_token }}'  // Django security requirement (from docs)
+                            },
+                            credentials: 'same-origin',  // Accept request only from same-origin
+                            body: JSON.stringify(data)
+                        })
+                        .then((response) => {
+                            console.log("Checkout Success")
+                            console.log(response);
+
+                            window.location.href = '/'; // Redirect user back to frontpage after order completion
+                        })
+
+                        .catch(function (error) {
+                            console.log('Error 2');
+                            console.log(error)
+                        })
+                    },
                     incrementQuantity(product_id, quantity, price) {
                         console.log('product_id', product_id);
 
@@ -119,7 +307,7 @@
                     },
 
                     decrementQuantity(product_id, quantity, price) {
-                        console.log('product_id', product_id);
+                        console.log('Remove product_id', product_id);
 
                         var data = {
                             'product_id': product_id,
@@ -127,37 +315,42 @@
                             'quantity': parseInt(quantity) - 1  // Parse as Int to be sure
                         };
 
+                        if (parseInt(quantity -1) === 0) {
+                            this.removeFromCart(product_id)
+
+                        } else {
                         store.commit('increment', -1); // When incrementing quantity also call Vuex increment
                         store.commit('changeTotalCost', -parseFloat(price));
 
-                        fetch('/api/add_to_cart/', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',  // Tell it the content type
-                                'X-CSRFToken': '{{  csrf_token }}'  // Django security requirement (from docs)
-                            },
-                            credentials: 'same-origin',  // Accept request only from same-origin
-                            body: JSON.stringify(data)
-                        })
-                        .then((response) => {
-                            console.log(response)  // For debugging!
+                            fetch('/api/add_to_cart/', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',  // Tell it the content type
+                                    'X-CSRFToken': '{{  csrf_token }}'  // Django security requirement (from docs)
+                                },
+                                credentials: 'same-origin',  // Accept request only from same-origin
+                                body: JSON.stringify(data)
+                            })
+                                .then((response) => {
+                                    console.log(response)  // For debugging!
 
-                            // Update cart quantity and total price without refreshing the page
-                            for (var i = 0; i < this.products.length; i++) {  // Increase on click
-                                var product = this.products[i];
+                                    // Update cart quantity and total price without refreshing the page
+                                    for (var i = 0; i < this.products.length; i++) {  // Increase on click
+                                        var product = this.products[i];
 
-                                if (product.id === product_id) {
-                                    this.products[i].quantity = parseInt(this.products[i].quantity) - 1;
-                                    this.products[i].total_price = parseInt(this.products[i].quantity) * parseFloat(this.products[i].price)
-                                }
-                            }
-                        })
+                                        if (product.id === product_id) {
+                                            this.products[i].quantity = parseInt(this.products[i].quantity) - 1;
+                                            this.products[i].total_price = parseInt(this.products[i].quantity) * parseFloat(this.products[i].price)
+                                        }
+                                    }
+                                })
 
-                        .catch(function (error) {
-                            console.log('Error 2');
-                            console.log(error)
-                        })
-                    },
+                                .catch(function (error) {
+                                    console.log('Error 2');
+                                    console.log(error)
+                                })
+                        }
+                },
 
                     removeFromCart(product_id) {
                         console.log('Product_id:', product_id);
