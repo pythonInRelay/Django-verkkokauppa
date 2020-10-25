@@ -77,7 +77,7 @@ Application requirements:
 
 ______________________________________
 
-## Usage instructions
+## Local machine installation instructions
 
 1. Ensure Python3 and pip are installed (I use a venv in PyCharm)
 2. Run ```python pip install -r requirements.txt```
@@ -107,5 +107,47 @@ Then repeat above steps 3 and 4.
 Project is then storing database data inside an sqlite3 file in the root directory
 
 Open a browser and visit http://localhost:8000/
+
+## Server installation instructions
+
+Here's how to install this site from scratch (clean Ubuntu 20.04.1 LTS)
+
+1. Use Debian or Ubuntu or something
+2. Make a new usergroup, user and home dir for that user
+3. ```apt get update && apt upgrade -y```
+4. ```apt install python3 python3-virtualenv libmysqlclient-dev```
+5. ```virtualenv venv```
+6. ```cd env```
+7. ```source bin/activate```
+8. ```pip install -r requirements.txt```
+9. ```mkdir logs```
+10. ```chown -R <user_you_created>:<group_you_created> .```
+11. ```git clone https://github.com/pythonInRelay/Django-verkkokauppa.git```
+12. ```cd Django-verkkokauppa```
+13. ```sudo apt install mariadb-server```
+14. ```sudo systemctl status mariadb```
+15. ```sudo mysql_secure_installation```
+16. ```Set up root password for MySQL```
+17. ```sudo mysql -u root -p```
+18. Enter root password
+19. ```CREATE DATABASE verkkokauppa;```
+20. ```SHOW DATABASES;```
+21. Confirm that the **verkkokauppa** database exists
+22. ```quit```
+23. ```python manage.py makemigrations```
+24. ```python manage.py migrate```
+25. ```python manage.py createsuperuser```
+26. ```ifconfig```
+27. Take note of your IPv4 address
+28. ```cd verkkokauppa```
+29. ```nano settings.py```
+30. ```ALLOWED_HOSTS = ['<yourserverip>']```
+31. Save and exit the file
+32. ```cd ..```
+33. ```python manage.py runserver <yourserverip:8001>```
+34. In a browser go to <yourserverip:8001>/admin and login
+
+You now have the site set up with an account that has admin access.
+Use the user you created on the machine for SSH access in the future and create another non-root user in the admin page.
 
 ______________________________________
