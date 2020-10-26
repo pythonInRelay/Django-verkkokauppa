@@ -107,11 +107,11 @@
                         <div class="field">
                             <div class="control">
                                 <label>Country</label>
-                                <input type="text" name="country" v-model="country">
+                                <input type="text" name="country" v-model="country"><br><br>
                             </div>
                         </div>
 
-                        <button class="button is-primary">Check Out</button>
+                        <!-- <button class="button is-primary">Check Out</button> -->
                     </form>
                 </div>
                 <p v-else>Your cart is empty!</p>
@@ -134,8 +134,7 @@
             </div>
 
             <!-- Run buy() on click -->
-            <button @click="buy()">Check out</button>
-
+                    <br><button @click="buy()">Check out</button>
         </div>
     {% endblock %}
 
@@ -211,7 +210,7 @@
                         }
 
                         if (data.country === '') {
-                            this.errors.push('Error! Please enter a sandwich!')  // Just checking you're paying attention reader :)
+                            this.errors.push('Error! Please enter a country!')  // Just checking you're paying attention reader :)
                         }
 
                         if (this.errors.length === 0) { // Don't run if errors

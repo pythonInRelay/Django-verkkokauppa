@@ -25,7 +25,7 @@
             <p>{{ product.description }}</p>
             {%  endif %}
 
-            <button @click="addToCart({{ product.id }})">Add to Cart</button>
+            <br><button @click="addToCart({{ product.id }})">Add to Cart</button>
 
             <article class="message is-success" v-if="showMessage">
                 <div class="message-body">
