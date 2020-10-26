@@ -26,7 +26,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=255)
     description = models.TextField(blank=True, null=True)
     price = models.FloatField()
-    product_id = models.IntegerField()
+    product_id = models.IntegerField(blank=True, null=True)
     is_featured = models.BooleanField(default=False)  # Is the product a featured product? (Displays on frontpage)
 
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)  # Change upload DIR from root

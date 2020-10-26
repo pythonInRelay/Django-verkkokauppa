@@ -1,6 +1,23 @@
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 
 from .models import Product, Category
+
+
+# Create the necessary search function for assignment
+def search(request):
+    query = request.GET.get('query')
+    qs = Q(title__icontains=query) | Q(description__icontains=query)
+    if query.isdigit():  # Because product_id is an integer it must be cast as an int on its own to prevent a ValueError
+        qs |= Q(product_id=query)
+    products = Product.objects.filter(qs)
+
+    context = {
+        'query': query,
+        'products': products
+    }
+
+    return render(request, 'search.html', context)
 
 
 def product_detail(request, category_slug, slug):  # Maybe remove unused category_slug

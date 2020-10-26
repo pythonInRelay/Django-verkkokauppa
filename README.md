@@ -3,7 +3,7 @@
 ### Description
 
 A simple verkkokauppa made in Django, using Vue.js/Vuex, AJAX and a background API and Bulma .css framework. This project was done as part of a job interview for FNS.
-The project was almost entirely written by hand and designed from the ground up to incorporate best practices.
+The project was almost entirely written by hand and designed from the ground up to incorporate best practices. The design works on mobile devices also.
 
 Time taken: Approx 5½ hours incl. testing, diagrams, readme explanation, deploying to production server, payment integration and setting up domain and SSL etc.
 

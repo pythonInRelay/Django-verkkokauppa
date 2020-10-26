@@ -16,19 +16,34 @@
 	<body>
 
         <!-- Navbar -->
-		<nav class="navbar is-dark">
+		<nav class="navbar is-dark" id="navbarapp">
 			<div class="navbar-brand">
 				<a class="navbar-item" href="{% url 'frontpage' %}">Verkkokauppa</a>
 
                 <!-- Mobile burger theme -->
-				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="main-navbar">
+				<a @click="toggleMenu()" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="main-navbar">
 					<span aria-hidden="true"></span>
 					<span aria-hidden="true"></span>
 					<span aria-hidden="true"></span>
 				</a>
 			</div>
-
-			<div id="main-navbar" class="navbar-menu">
+            <!-- Bind is-active to the menuClass if the menubutton is displayed -->
+			<div id="main-navbar" class="navbar-menu" :class="{ 'is-active': menuClass }">
+                <div class="navbar-start">
+                    <div class="navbar-item">
+                        <form method="get" action="{% url 'search' %}">
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input type="text" class="input" placeholder="Search..." name="query">
+                                </div>
+                                <div class="control">
+                                    <button class="button is-success">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 				<div class="navbar-end">
 
                     {% for category in menu_categories %}
@@ -102,7 +117,7 @@
 					toggleMenu() {
 						console.log('toggleMenu');
 
-						this.menuClass = !this.menuClass;
+						this.menuClass = !this.menuClass;  // Each time menu bar is clicked, its set to opposite of now
 					}
 				}
 			});
