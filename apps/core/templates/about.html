@@ -8,9 +8,34 @@
     {% block title %}About | {% endblock %}
 
     {%  block content %}
-    <h1 class="title">About</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<h2>About Us</h2>
+				<br />
 
-        This is the information about verkkokauppa
+				<p><img src="https://picsum.photos/g/1200/300" class="img-responsive" width="100%"></p><br>
+                <p><i>I was tasked with making this website by FNS so I did. Here's hoping they think that it's pretty good and that my code is pretty stellar. It's made mostly from scratch by sighting and using other websites and common projects for inspiration, modified of course to fit the requirements that FNS set out to give me. That is, it has a search function by product name and ID, a way to add items to the cart without refreshing the page thanks to Vue.js and well... it's an online store. So it has photos and via the Admin panel you can add products, see orders and even sort them by any means you like (yes I had to code all that myself)! The basic functionality was super easy so I even added payment integration with Stripe and dozens of other features which you can read about in the README.md in the project folder.</i></p><br>
+
+                <p><i>Making this website was pretty fun and all the technologies I used made it pretty easy, especially Vue.js, Bulma, Gunicorn and Stripe. Everything I had trouble with, I fixed by either:</i></p><br>
+                <ol>
+                <li>Drinking more coffee (I think I had about 5 cups today? Maybe that isn't even a lot)</li>
+                <li>Checking the Python/Django/Vue/etc. docs</li>
+                <li>Stackoverflow (helped a lot with some of the tricky and forgettable Vue syntax)</li>
+                <li>Discord (there's tons of awesome coding channels with people who are mega helpful</li>
+                <li>Taking a break</li>
+                </ol>
+
+                <br>
+                <p><i>Almost all of my focus went into the backend because that's my passion. I love getting deep into software and code, which includes deploying and provisioning servers. So for me this was just another day doing what I am normally doing.<p><i><br>
+                <p><i>Anyway, I hope you guys at FNS are impressed with my work. I hope this, along with the first project I already showed, proves how much how capable I am how much I'd really love the chance to work with you and help improve your ProVet software. I'm looking forward to hearing your feedback and the next interview to discuss this assignment! Thank you for your time!<p><i><br>
+
+				<p><img src="https://picsum.photos/g/600/300" class="img-responsive" width="100%"></p>
+
+                <p><b>P.S. If you refresh the page, the images change!.</b></p>
+			</div>
+		</div>
+	</div>
     {% endblock %}
 </head>
 <body>
