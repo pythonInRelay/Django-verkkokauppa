@@ -6,7 +6,6 @@ idna
 gunicorn
 Pillow
 pytz
-requests
 sqlparse
 stripe
 urllib3
