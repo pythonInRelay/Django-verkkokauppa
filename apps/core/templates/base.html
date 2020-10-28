@@ -45,11 +45,11 @@
                 </div>
             </div>
 				<div class="navbar-end">
-
+                    <!-- Slug link relationship for the navbar -->
                     {% for category in menu_categories %}
                         <a href="{% url 'category_detail' category.slug %}" class="navbar-item">{{ category.title }}</a>
                     {% endfor %}
-
+                    <!-- Cart button -->
                     <div class="navbar-item" id="navbarapp">
                         <a href="{% url 'cart' %}" class="button is-primary">Cart ([[ numItems ]])</a>
                     </div>
@@ -61,7 +61,7 @@
 			{% block content %}
             {% endblock %}
         </section>
-
+    <!-- Basic footer for the about and contact page mainly -->
         <footer class="footer">
             <div class="columns">
                 <div class="column is-4">
@@ -79,10 +79,10 @@
         <!-- Add Vue.js for Ajax, Cart Logic et cetera -->
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-        <!-- Add Vuex for storing cart quantity -->
+        <!-- Add Vuex for storing cart quantity state -->
         <script src="https://unpkg.com/vuex@3.5.1/dist/vuex.js"></script>
 
-        <!-- Set the cart quantity to zero -->
+        <!-- Set the cart state -->
         <script>
 			var store = new Vuex.Store({
 				state: {
@@ -91,7 +91,7 @@
 				},
 				mutations: {
 					increment(state, quantity) {
-						state.numItems += quantity;
+						state.numItems += quantity;  <!-- Cart button state becomes quantity -->
 					},
 					changeTotalCost(state, newCost) {
 						state.totalCost += parseFloat(newCost)  // Must cast as a float
@@ -101,7 +101,7 @@
 
 			var navbarapp = new Vue({
 				el: '#navbarapp',
-				delimiters: ['[[', ']]'],
+				delimiters: ['[[', ']]'], <!-- Delimiters that prevent conflicts with Django (Vue.js docs) -->
 				store: store,
 				data () {
 					return {
@@ -116,7 +116,7 @@
 				methods: {
 					toggleMenu() {
 						console.log('toggleMenu');
-
+                        <!-- This is for the mobile part, so the navbar expands and retracts on mobile -->
 						this.menuClass = !this.menuClass;  // Each time menu bar is clicked, its set to opposite of now
 					}
 				}

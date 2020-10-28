@@ -8,11 +8,13 @@ from .models import Order, OrderItem
 # Add additional information to admin page with order ID, name, created at etc. Thanks to Django templates!
 
 
+# On the other page return the person's first and last name
 def order_name(obj):
     return '%s %s' % (obj.first_name, obj.last_name)
 order_name.short_description = 'Name'
 
 
+# Add date when the orders get shipped
 def admin_order_shipped(modeladmin, request, queryset):
     for order in queryset:
         order.shipped_date = datetime.datetime.now()
@@ -28,6 +30,7 @@ class OrderItemInLine(admin.TabularInline):
     raw_id_fields = ['product']
 
 
+# Sorting features
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', order_name, 'status', 'created_at']
     list_filter = ['created_at', 'status']

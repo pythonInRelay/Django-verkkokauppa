@@ -3,17 +3,16 @@ import stripe
 
 from django.conf import settings
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 
 from .cart import Cart
 
 from apps.order.models import Order
 
 
-@csrf_exempt
+# Uses the Stripe API to process payments by querying the private key against my test business
 def webhook(request):
     payload = request.body
-    event = None
+    event = None  # Create empty event
 
     stripe.api_key = settings.STRIPE_API_KEY_HIDDEN
 
@@ -24,12 +23,12 @@ def webhook(request):
     except ValueError as err:
         return HttpResponse(status=400)
 
-    if event.type == 'payment_intent.succeeded':
+    if event.type == 'payment_intent.succeeded':  # Update the event if the payment succeeds
         payment_intent = event.data.object
         print('Payment intent:', payment_intent)
 
         order = Order.objects.get(payment_intent=payment_intent.id)
-        order.paid = True
+        order.paid = True  # Set to paid on the orders page
         order.save()
 
     return HttpResponse(status=200)

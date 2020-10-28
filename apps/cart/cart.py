@@ -43,9 +43,9 @@ class Cart(object):
             self.cart[product_id] = {'quantity': 0, 'price': price, 'id': product_id}  # Set to string instead of dict index
 
         if update_quantity:
-            self.cart[product_id]['quantity'] = quantity  # Add one extra when updating quantity
+            self.cart[product_id]['quantity'] = quantity  # Set the entire quantity at once, every time.
         else:
-            self.cart[product_id]['quantity'] += 1  # When adding a new product to cart, just add 1
+            self.cart[product_id]['quantity'] += 1  # Set the entire quantity every time and then just add 1
 
         self.save()
 

@@ -50,7 +50,7 @@ class Product(models.Model):
 
     # Set options for thumbnail
 
-    def make_thumbnail(self, image, size=(300, 200)):
+    def make_thumbnail(self, image, size=(300, 200)):  # Could increase this for smaller images
         img = Image.open(image)
         img.convert('RGB')
         img.thumbnail(size)

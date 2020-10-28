@@ -21,7 +21,7 @@ def create_checkout_session(request):
     for item in cart:
         product = item['product']
 
-        price = int(product.price * 100)
+        price = int(product.price * 100)  # Stripe does the conversion in cents so we need to multiple by 100
 
         obj = {
             'price_data': {
@@ -39,8 +39,8 @@ def create_checkout_session(request):
         payment_method_types=['card'],
         line_items=items,
         mode='payment',
-        success_url='http://localhost:8000/cart/success/',
-        cancel_url='http://localhost:8000/cart/'
+        success_url='http://localhost:8000/cart/success/',  # Change these in production otherwise user gets a 404
+        cancel_url='http://localhost:8000/cart/'  # Change these in production otherwise user gets a 404
     )
 
     """ Create Order Block Start """
@@ -57,9 +57,9 @@ def create_checkout_session(request):
 
     orderid = checkout(request, first_name, last_name, email, address, zipcode, city, country)
 
-    total_price = 0.00
+    total_price = 0.00  # Might add VAT here later
 
-    # Create new variable and loop through all products
+    # Loop through each product and update total price
     for item in cart:
         product = item['product']
         total_price += (float(product.price) * int(item['quantity']))  # Add total price to admin page data
@@ -89,7 +89,7 @@ def api_checkout(request):
 
     orderid = checkout(request, first_name, last_name, email, address, zipcode, city, country)
 
-    paid = True
+    paid = True  # Update payment if Stripe gets a response back
 
     if paid:
         order = Order.objects.get(pk=orderid)

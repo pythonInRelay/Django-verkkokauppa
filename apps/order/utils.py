@@ -8,7 +8,7 @@ from apps.cart.cart import Cart
 from apps.order.models import Order, OrderItem
 
 
-# Create a database entry for all the following customer data
+# Create a database entry for all the following customer data at checkout
 def checkout(request, first_name, last_name, email, address, zipcode, city, country):
     order = Order(first_name=first_name, last_name=last_name, email=email, address=address, zipcode=zipcode, city=city, country=country)
     order.save()
@@ -20,5 +20,5 @@ def checkout(request, first_name, last_name, email, address, zipcode, city, coun
     for item in cart:
         OrderItem.objects.create(order=order, product=item['product'], price=item['price'], quantity=item['quantity'])
 
-    # Get the id from the above order
+    # Update order id
     return order.id
