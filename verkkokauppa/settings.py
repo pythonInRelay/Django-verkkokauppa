@@ -1,7 +1,10 @@
 """Django settings for verkkokauppa project."""
 
 import os
+import secrets
 from pathlib import Path
+
+from . import secret
 from .secret import *  # Import file with SECRET_KEY
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -82,15 +85,8 @@ WSGI_APPLICATION = 'verkkokauppa.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'verkkokauppa',  # This database needs to already exist on the server!
-        'USER': 'root',  # The username of the account with write privileges to the above database
-        'PASSWORD': 'UN1versal*1',  # The password of the database account
-        'HOST': 'localhost',
-        'PORT': '3307',  # 3306 is MySQL and 3307 is often MariaDB
-        'OPTIONS': {
-            'autocommit': True,
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 

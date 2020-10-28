@@ -9,6 +9,7 @@ class Order(models.Model):
     SHIPPED = 'shipped'
     ARRIVED = 'arrived'
 
+# Choices for setting
     STATUS_CHOICES = (
         (ORDERED, 'Ordered'),
         (SHIPPED, 'Shipped'),
@@ -31,12 +32,13 @@ class Order(models.Model):
     paid_amount = models.FloatField(blank=True, null=True)
 
 
-# update DB with info from Stripe's response
+# update DB with info from Stripe's API and key response
     payment_intent = models.CharField(max_length=255)
 
     shipped_date = models.DateTimeField(blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=ORDERED)
 
+    # Create and name the instance as first_name
     def __str__(self):
         return '%s' % self.first_name
 

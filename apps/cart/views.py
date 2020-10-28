@@ -9,7 +9,7 @@ def cart_detail(request):
     cart = Cart(request)
     products_string = ''  # Create new product string so Django can create string
 
-    for item in cart:  # Loop through items in the cart and provide the following views
+    for item in cart:  # Loop through items in the cart and provide the following views. Don't ask me why I used old %s here. I guess I could have used an f'string'
         product = item['product']
         url = '/%s/%s' % (product.category.slug, product.slug)  # Item pages as item
         b = "{'id': '%s', 'title': '%s', 'price': '%s', 'quantity': '%s', 'total_price': '%s', product_id: '%s', " \
