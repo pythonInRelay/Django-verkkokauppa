@@ -1,7 +1,5 @@
 # Verkkokauppa using Django
 
-[![Build Status](https://travis-ci.com/pythonInRelay/Django-verkkokauppa.svg?token=doTd5AzqwFQTF9ztjG5M&branch=master)](https://travis-ci.com/pythonInRelay/Django-verkkokauppa)
-
 ### Description
 
 A simple verkkokauppa made in Django, using Vue.js/Vuex, AJAX and a background API and Bulma .css framework. This project was done as part of a job interview for FNS.
